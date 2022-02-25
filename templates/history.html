@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>TODO: History view</h1>
+<h3>Balance {{total_spent}}</h3>
+<ol>
+  {% for item, count in itemization.items() %}
+    <li>
+      Bought {{count}} {{item}} at {{prices[item]}} for a total of {{prices[item]*count}}
+    </li>
+  {% endfor %}
+</ol>
 {% endblock %}

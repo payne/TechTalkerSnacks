@@ -57,7 +57,10 @@ def deposit():
 
 @app.route("/history/")
 def history():
-  return render_template("history.html")
+  users_database = web.UserStore().current
+  purchases = users_database.get('purchases', [])
+  total_spent, itemization = compute_total_spent(purchases)
+  return render_template("history.html", prices = prices, total_spent = total_spent, itemization = itemization)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
