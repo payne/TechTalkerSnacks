@@ -13,6 +13,17 @@ def index():
 def hello(name=None):
   return render_template("hello.html", name=name)
   
+@app.route("/home/")
+def home():
+  prices = {
+      'Rice Krispy Treats': 0.21,
+      'candy': 0.50,
+      'Propel': 0.45,
+      'coke': 0.40,
+      'celsius': 1.12
+  }
+  return render_template("home.html", prices = prices)
+  
 
 
 if __name__ == '__main__':

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <ol>
+  {% for item, price in prices.items() %}
+    <li>
+      <a href="/buy?item={{item}}">Buy {{item}} for {{price}}</a>
+    </li>
+  {% endfor %}
+  </ol>
+{% endblock %}
