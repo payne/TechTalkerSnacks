@@ -40,8 +40,7 @@ def home():
   return render_template("home.html", prices = prices, balance = balance, itemization = itemization)
 
 def compute_total_spent(purchases):
-  items = [item for item in purchases]
-  c = Counter(items)
+  c = Counter(purchases)
   items_to_quantity_bought = { item: count for item, count in c.most_common() }
   ts = 0
   for item, count in items_to_quantity_bought.items():
