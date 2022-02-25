@@ -32,8 +32,12 @@ prices = {
 def home():
   users_database = web.UserStore().current
   purchases = users_database.get('purchases', [])
+  deposits_list = users_database.get('deposits',[])
   total_spent, itemization = compute_total_spent(purchases)
-  return render_template("home.html", prices = prices, total_spent = total_spent, itemization = itemization)
+  # Since the database doesn't like to store floats, we store strings
+  deposit_amounts = [ float(deposit_string) for deposit_string in deposits_list ]
+  balance = total_spent + sum(deposit_amounts)
+  return render_template("home.html", prices = prices, balance = balance, itemization = itemization)
 
 def compute_total_spent(purchases):
   items = [item for item in purchases]
@@ -66,6 +70,7 @@ def deposit():
   form = DepositForm()
   if form.amount.data:
     amount = form.amount.data
+    # Since the database doesn't like to store floats, we store strings
     deposits_list.append(f"{amount}")
     users_database['deposits'] = deposits_list
   return render_template("deposit.html", deposit_history = deposits_list, form=form)
