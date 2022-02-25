@@ -1,5 +1,22 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>TODO: Deposit view</h1>
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.amount.label }}<br>
+      {{ form.amount }}<br>
+      {% for error in form.amount.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+  <h2>History of deposits:</h2>
+  <ol>
+    {% for d in deposit_history %}
+    <li>{{d}}</li>
+    {% endfor %}
+  </ol>
 {% endblock %}
+

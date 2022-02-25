@@ -1,6 +1,10 @@
+import os
 from flask import Flask, render_template, redirect, url_for, request
 from replit import web
 from collections import Counter
+from flask_wtf import FlaskForm
+from wtforms import SubmitField, DecimalField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 
@@ -50,17 +54,33 @@ def buy():
   users_database['purchases'] = purchases
   return redirect(url_for("home"))
 
+class DepositForm(FlaskForm):
+    amount = DecimalField('Money', validators=[DataRequired()])
+    submit = SubmitField('Record Payment')
   
-@app.route("/deposit/")
+@app.route("/d", methods=['GET', 'POST'])
+@web.authenticated
 def deposit():
-  return render_template("deposit.html")
+  users_database = web.UserStore().current
+  deposits_list = users_database.get('deposits',[])
+  form = DepositForm()
+  if form.amount.data:
+    amount = form.amount.data
+    deposits_list.append(f"{amount}")
+    users_database['deposits'] = deposits_list
+  return render_template("deposit.html", deposit_history = deposits_list, form=form)
 
 @app.route("/history/")
+@web.authenticated
 def history():
   users_database = web.UserStore().current
   purchases = users_database.get('purchases', [])
   total_spent, itemization = compute_total_spent(purchases)
   return render_template("history.html", prices = prices, total_spent = total_spent, itemization = itemization)
 
+class Config(object):
+  SECRET_KEY = os.environ.get('SECRET_KEY') or 'environment variable is set to an empty string'
+
 if __name__ == '__main__':
+    app.config.from_object(Config)
     app.run(host='0.0.0.0', port=8080)
