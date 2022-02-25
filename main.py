@@ -83,6 +83,15 @@ def history():
   total_spent, itemization = compute_total_spent(purchases)
   return render_template("history.html", prices = prices, total_spent = total_spent, itemization = itemization)
 
+@app.route('/clear', methods=['GET', 'POST'])
+@web.authenticated
+def clear():
+    users = web.UserStore()
+    if 'purchases' in users.current: del users.current['purchases']
+    if 'deposits' in users.current: del users.current['deposits']
+    return redirect(url_for("home"))
+  
+
 class Config(object):
   SECRET_KEY = os.environ.get('SECRET_KEY') or 'environment variable is set to an empty string'
 
