@@ -5,7 +5,7 @@
 <ol>
   {% for item, count in itemization.items() %}
     <li>
-      Bought {{count}} {{item}} at {{prices[item]}} for a total of {{prices[item]*count}}
+      Bought {{count}} {{item}} at {{ prices[item] }} for a total of {{ prices[item] * count }}
     </li>
   {% endfor %}
 </ol>
