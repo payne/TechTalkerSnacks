@@ -22,7 +22,7 @@ def hello(name=None):
 prices = {
     'Rice Krispy Treats': 0.21,
     'candy': 0.50,
-    'Propel': 0.45,
+    'Propel': 0.71,
     'coke': 0.40,
     'celsius': 1.12
 }
